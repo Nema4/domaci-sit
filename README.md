@@ -1,475 +1,154 @@
 # Dokumentace domácí počítačové sítě
 
-**Home Network Infrastructure – Analysis, Documentation & Troubleshooting**
+**Home Network Infrastructure – analýza, inventarizace a diagnostika**
 
-**Stav projektu:** Probíhá analýza a dokumentace  
-**Datum zahájení:** 23. 11. 2026  
-**Prostředí:** Reálná domácí síť
+**Stav:** Verze 1.0 – dokončená základní analýza a dokumentace  
+**Datum měření:** 23. 11. 2026  
+**Prostředí:** Skutečná domácí síť, Windows a O2 Smart Box 1
 
----
+## 1. O projektu
 
-## 1. Úvod projektu
+Cílem projektu bylo zmapovat a zdokumentovat existující domácí síť, zjistit základní IP konfiguraci a ověřit síťovou konektivitu. Jde o praktický projekt do IT portfolia zaměřený na TCP/IP, DHCP, DNS, diagnostiku a tvorbu technické dokumentace.
 
-Tento projekt se zaměřuje na analýzu, dokumentaci, diagnostiku a vyhodnocení zabezpečení existující domácí počítačové sítě.
+**Rozsah verze 1.0:** identifikace hardwaru, inventarizační snímek klientů z routeru, ověřená část logické topologie a čtyři základní diagnostické testy. Detailní fyzická kabeláž a bezpečnostní audit nejsou součástí dokončeného rozsahu.
 
-Domácí síť využívá internetové připojení od poskytovatele O2 a zahrnuje router, ethernetový switch, počítače, mobilní telefony, televizní zařízení a další síťové klienty.
+## 2. Použitá infrastruktura
 
-Projekt vytvářím za účelem získání praktických zkušeností s počítačovými sítěmi a jejich správou. Je součástí mého IT portfolia pro budoucí uplatnění v oblasti IT infrastruktury, technické podpory a síťové administrace.
-
-### 1.1 Cíle projektu
-
-- Identifikovat používanou síťovou infrastrukturu.
-- Zmapovat fyzické a logické uspořádání sítě.
-- Provést inventarizaci síťových zařízení.
-- Analyzovat IPv4 a IPv6 konfiguraci.
-- Porozumět fungování DHCP a DNS v domácí síti.
-- Ověřit dostupnost lokální sítě a internetu.
-- Provést základní síťovou diagnostiku.
-- Zkontrolovat zabezpečení domácí sítě.
-- Navrhnout možná zlepšení infrastruktury.
-- Vytvořit přehlednou technickou dokumentaci.
-
----
-
-## 2. Popis současné domácí sítě
-
-Domácí síť je postavena na routeru O2 Smart Box první generace.
-
-Router zajišťuje přístup k internetu, směrování síťové komunikace, automatické přidělování IPv4 konfigurace prostřednictvím DHCP a DNS služby pro koncová zařízení.
-
-Součástí infrastruktury je také osmipo rtový gigabitový ethernetový switch D-Link DGS-108, který slouží k rozšíření počtu dostupných ethernetových portů.
-
-Koncová zařízení využívají dva způsoby připojení:
-
-- **Wi-Fi:** Mobilní telefony, počítače a další bezdrátová zařízení.
-- **Ethernet:** Počítače, televizní zařízení a další kabeloví klienti.
-
-Přesné fyzické propojení routeru, switche a jednotlivých zařízení bude ověřeno v další fázi projektu.
-
-### 2.1 Základní informace o síti
-
-| Parametr | Hodnota |
-|---|---|
-| Poskytovatel internetu | O2 |
-| Hlavní router | O2 Smart Box 1 |
-| Ethernetový switch | D-Link DGS-108 |
-| Lokální IPv4 síť | 10.0.1.0/24 |
-| Výchozí IPv4 brána | 10.0.1.138 |
-| DHCP server | 10.0.1.138 |
-| IPv4 DNS server | 10.0.1.138 |
-| IPv6 | Aktivní na testovacím PC |
-| Typ internetové přípojky | Zatím neověřeno |
-
----
-
-## 3. Použitý síťový hardware
-
-### 3.1 Router – O2 Smart Box 1
-
-O2 Smart Box 1 představuje hlavní síťové zařízení domácnosti.
-
-Zjištěné funkce:
-
-- Výchozí IPv4 brána
-- DHCP server
-- DNS resolver pro klienty
-- Směrování komunikace
-- Bezdrátový přístupový bod
-- Ethernetové připojení zařízení
-- Webové administrační rozhraní
-
-**IPv4 adresa routeru:** `10.0.1.138`
-
-Router poskytuje webovou administraci, ve které lze zobrazit mapu sítě, seznam zařízení a další konfigurační informace.
-
-### 3.2 Ethernetový switch – D-Link DGS-108
-
-Součástí domácí infrastruktury je switch D-Link DGS-108.
-
-Základní vlastnosti:
-
-- 8 ethernetových portů
-- Podpora rychlostí 10/100/1000 Mb/s
-- Neřízený switch
-- Přepínání ethernetových rámců na 2. vrstvě OSI modelu
-- Rozšíření kabelové konektivity domácí sítě
-
-Tento model nemá běžné webové administrační rozhraní a nevyžaduje vlastní správní IP adresu.
-
-Přesné zapojení jeho portů bude zdokumentováno při mapování fyzické topologie.
-
-### 3.3 Testovací počítač
-
-K diagnostice je používán počítač s operačním systémem Windows.
-
-| Parametr | Hodnota |
-|---|---|
-| Identifikátor | PC01 |
-| Operační systém | Windows |
-| Síťový adaptér | Realtek 8852BE Wireless LAN Wi-Fi 6 PCI-E NIC |
-| Způsob připojení | Wi-Fi |
-| IPv4 adresa | 10.0.1.77 |
-| DHCP | Povoleno |
-
-Pro testování byly využity příkazy `ipconfig`, `ping`, `nslookup` a `tracert`.
-
----
-
-## 4. Inventarizace síťových zařízení
-
-### 4.1 Cíl inventarizace
-
-Cílem inventarizace je identifikovat zařízení připojená do domácí sítě, určit jejich funkci, způsob připojení a dostupnou IP konfiguraci.
-
-Data byla získána pomocí:
-
-- Webové administrace O2 Smart Boxu
-- Funkce Device Map
-- Funkce Device List
-- Fyzické kontroly síťového hardwaru
-- Diagnostických nástrojů Windows
-
-### 4.2 Síťová infrastruktura
-
-| ID | Zařízení | IPv4 adresa | Funkce |
+| Označení | Zařízení | Úloha | Ověření |
 |---|---|---|---|
-| R01 | O2 Smart Box 1 | 10.0.1.138 | Router, DHCP, DNS |
-| SW01 | D-Link DGS-108 | Bez správní IP | Ethernetový switch |
-| PC01 | Testovací Windows PC | 10.0.1.77 | Diagnostika sítě |
+| R01 | O2 Smart Box 1 | Výchozí brána, DHCP, DNS a Wi-Fi | Administrace a nastavení Windows |
+| SW01 | D-Link DGS-108 | Neřízený 8portový gigabitový ethernetový switch | Fotografie zařízení |
+| PC01 | Počítač s Windows | Testovací zařízení připojené přes Wi-Fi | `ipconfig /all` |
 
-### 4.3 Klientská zařízení podle O2 Smart Boxu
+Router má v lokální IPv4 síti adresu `10.0.1.138`. Switch D-Link DGS-108 nemá běžné webové administrační rozhraní ani vlastní správní IP adresu. Přesné kabelové zapojení switche nebylo ověřeno.
 
-V okamžiku kontroly zobrazovalo rozhraní Device List celkem 9 klientských záznamů.
+## 3. Inventarizace klientů
 
-#### Wi-Fi klienti
+V administrační části **Device List** bylo zachyceno **9 klientských záznamů**: 5 ve skupině Wi-Fi a 4 ve skupině Ethernet. Jde o stav zobrazený routerem, nikoli zaručeně úplný seznam všech zařízení v domácnosti.
 
-| ID | Typ zařízení | Připojení | IPv4 |
+| ID | Typ / popis podle routeru | Skupina | IPv4 |
 |---|---|---|---|
-| MOB01 | Android telefon | Wi-Fi | Nezjištěno |
-| MOB02 | Android telefon | Wi-Fi | Nezjištěno |
-| MOB03 | Android telefon | Wi-Fi | Nezjištěno |
-| MOB04 | Android / Motorola | Wi-Fi | Nezjištěno |
-| PC01 | Windows PC | Wi-Fi | 10.0.1.77 |
+| MOB01 | Android telefon | Wi-Fi | Nezjištěna |
+| MOB02 | Android telefon | Wi-Fi | Nezjištěna |
+| MOB03 | Android zařízení | Wi-Fi | Nezjištěna |
+| MOB04 | Android / Motorola | Wi-Fi | Nezjištěna |
+| PC01 | Testovací počítač Windows | Wi-Fi | `10.0.1.77` |
+| TV01 | Android TV | Ethernet | Nezjištěna |
+| PC02 | Počítač | Ethernet | Nezjištěna |
+| PC03 | Počítač | Ethernet | Nezjištěna |
+| DEV01 | Klient označený Android-2 | Ethernet | Nezjištěna |
 
-**Počet zobrazených Wi-Fi klientů: 5**
+V mapě routeru byly navíc zobrazeny telefonní porty **FXS1** a **FXS2**; ty se nepočítají jako klientská zařízení. Dřívější mapa obsahovala i iPhone, který v následném seznamu chyběl. Není potvrzeno, zda byl odpojený, evidovaný pod jiným názvem, nebo šlo o historický záznam.
 
-#### Ethernet klienti
+## 4. Logická topologie
 
-| ID | Typ zařízení | Připojení | IPv4 |
+![Logická topologie domácí sítě](obrazky/topologie.png)
+
+Diagram zobrazuje **ověřenou část logické topologie**. Přerušovaná vazba u D-Link switche vyjadřuje neověřené fyzické zapojení, nikoli potvrzený kabelový spoj. Internetová přípojka a skutečné zapojení portů nebyly podrobně mapovány.
+
+## 5. IP adresace a síťové služby
+
+Konfigurace PC01 byla získána příkazem `ipconfig /all`.
+
+| Parametr | Zjištěná hodnota |
+|---|---|
+| IPv4 adresa PC01 | `10.0.1.77` |
+| Maska | `255.255.255.0` |
+| Podsíť | `10.0.1.0/24` |
+| Adresa sítě | `10.0.1.0` |
+| Broadcast | `10.0.1.255` |
+| Rozsah použitelných adres | `10.0.1.1–10.0.1.254` |
+| Výchozí IPv4 brána | `10.0.1.138` |
+| DHCP server | `10.0.1.138` |
+| IPv4 DNS server | `10.0.1.138` |
+| DNS suffix | `home` |
+| Typ připojení | Wi-Fi |
+| Bezdrátový adaptér | Realtek 8852BE Wi-Fi 6 |
+
+**DHCP:** Počítač má automatické přidělování IPv4 konfigurace zapnuté a používá DHCP server routeru. Skutečný DHCP pool (rozsah pronajímaných adres) nebyl ověřen.
+
+**DNS:** Router je nastaven jako IPv4 DNS server počítače. Při testu `nslookup` počítač komunikoval s DNS serverem `internet.o2` přes IPv6 a získal IPv4 i IPv6 odpovědi.
+
+**IPv6:** Na PC jsou aktivní globální, dočasné i link-local IPv6 adresy. Konkrétní globální adresy v dokumentaci nejsou uvedeny.
+
+## 6. Diagnostika a výsledky
+
+Testy byly provedeny z PC01 v příkazovém řádku Windows dne 23. 11. 2026.
+
+| Test | Příkaz | Naměřený výsledek | Hodnocení |
 |---|---|---|---|
-| TV01 | Android TV | Ethernet | Nezjištěno |
-| PC02 | Počítač | Ethernet | Nezjištěno |
-| PC03 | Počítač | Ethernet | Nezjištěno |
-| DEV01 | Neidentifikovaný Android klient | Ethernet | Nezjištěno |
+| Spojení s routerem | `ping 10.0.1.138` | 4/4 odpovědí, 0 % ztráta, průměr 4 ms | PASS |
+| Spojení s veřejnou IPv4 | `ping -4 1.1.1.1` | 4/4 odpovědí, 0 % ztráta, průměr 17 ms | PASS |
+| Překlad DNS | `nslookup seznam.cz` | Vráceny záznamy A i AAAA | PASS |
+| Trasa k cíli | `tracert -4 1.1.1.1` | Cíl dosažen na 11. skoku | PASS |
 
-**Počet zobrazených ethernetových klientů: 4**
+### 6.1 Ping na router
 
-### 4.4 Telefonní rozhraní
+![Výsledek ping na router](obrazky/ping-router.png)
 
-Router dále zobrazuje rozhraní:
+Rozsah odezvy byl 3–6 ms. Test potvrdil funkční komunikaci s výchozí bránou v době měření.
 
-- FXS1
-- FXS2
+### 6.2 Ping na veřejnou IPv4 adresu
 
-Tato rozhraní slouží pro telefonní služby a nejsou započítána mezi běžné síťové klienty.
+![Výsledek ping na internet](obrazky/ping-internet.png)
 
-### 4.5 Zjištěné nesrovnalosti
+Rozsah odezvy byl 17–18 ms. Test potvrdil dostupnost cíle `1.1.1.1`, nikoli kvalitu nebo dostupnost celého internetu.
 
-Při porovnání funkcí Device Map a Device List bylo zjištěno, že seznamy zařízení se nemusí zcela shodovat.
+### 6.3 DNS překlad
 
-Například zařízení typu iPhone bylo viditelné ve starším zobrazení mapy, ale v následném seznamu Device List nebylo uvedeno.
+![Výsledek DNS testu](obrazky/dns-test.png)
 
-Možné příčiny:
+Doména `seznam.cz` byla úspěšně přeložena. Adresa domácího IPv6 DNS resolveru je na veřejném snímku anonymizována.
 
-- Zařízení nebylo aktuálně připojené.
-- Router zobrazoval historický záznam.
-- Zařízení používá privátní Wi-Fi MAC adresu.
-- Zařízení je evidováno pod jiným názvem.
+### 6.4 Traceroute
 
-Přesná příčina zatím nebyla ověřena.
+![Výsledek traceroute](obrazky/traceroute.png)
 
-### 4.6 Závěr inventarizace
+První skok byl domácí router `10.0.1.138`, druhý skok privátní adresa `10.10.10.1` a jedenáctý skok cílová adresa `1.1.1.1`. Některé mezilehlé uzly neodpovídaly na diagnostické pakety; vzhledem k dosažení cíle to samo o sobě neprokazuje poruchu.
 
-Byla identifikována základní síťová infrastruktura a získán seznam devíti klientských záznamů.
+**Omezení měření:** Čtyři pakety při ping testu představují pouze krátký orientační test. Nebyla měřena dlouhodobá stabilita, propustnost, rychlost Wi-Fi ani bezpečnost celé sítě.
 
-Inventarizace však zatím není úplná.
+## 7. Bezpečnost a omezení analýzy
 
-Zbývá ověřit lokální IPv4 adresy klientů, jejich aktuální stav a případná další zařízení nezobrazená v seznamu.
+V rámci této verze nebyly prováděny změny v routeru, audit firewallu ani ověření konfigurace zabezpečení Wi-Fi. Proto nelze tvrdit, že je síť bezpečnostně prověřená.
 
----
+Při zveřejnění byly z dokumentace vynechány přístupové údaje, MAC adresy, identifikátory rodinných příslušníků a globální IPv6 adresy domácích zařízení. Privátní IPv4 adresy jsou uvedeny pro vysvětlení sítě.
 
-## 5. IP adresace a síťová konfigurace
+Další omezení: neověřené fyzické vedení kabelů, neznámý DHCP pool, neúplná inventarizace všech zařízení a neověřený typ internetové přípojky.
 
-### 5.1 IPv4 konfigurace
+## 8. Doporučení pro další rozvoj
 
-Konfigurace testovacího počítače byla získána příkazem:
+1. Ověřit skutečné kabelové propojení Smart Boxu, D-Link switche a ethernetových zásuvek.
+2. Zkontrolovat zabezpečení Wi-Fi, aktualizace routeru, vzdálenou administraci a hostovskou síť.
+3. Zjistit rozsah DHCP a případné rezervace IP adres.
+4. Průběžně aktualizovat seznam aktivních klientů.
+5. V samostatné laboratoři vyzkoušet monitoring, firewall a segmentaci pomocí VLAN na zařízení, které tyto funkce podporuje.
 
-`ipconfig /all`
+Tyto body představují **návrhy**, nikoli realizované změny.
 
-| Parametr | Hodnota |
-|---|---|
-| IPv4 adresa PC | 10.0.1.77 |
-| Maska podsítě | 255.255.255.0 |
-| Prefix sítě | /24 |
-| Síťová adresa | 10.0.1.0 |
-| Broadcast adresa | 10.0.1.255 |
-| Výchozí brána | 10.0.1.138 |
-| DHCP server | 10.0.1.138 |
-| IPv4 DNS server | 10.0.1.138 |
-| DNS suffix | home |
+## 9. Stav projektu
 
-Podsíť `10.0.1.0/24` obsahuje 256 IPv4 adres.
+**Verze 1.0 – dokončeno:**
 
-Z tohoto počtu je 254 adres použitelných pro síťová rozhraní.
+- [x] Identifikace hlavního routeru a switche
+- [x] Inventarizační snímek klientů z Device List
+- [x] Analýza IPv4 konfigurace a základních síťových služeb
+- [x] Ověření komunikace s routerem a externím cílem
+- [x] Test DNS a analýza trasy paketů
+- [x] Dokumentace výsledků včetně screenshotů
+- [x] Diagram ověřené části logické topologie
 
-Rozsah použitelných adres:
+**Možná navazující verze 2.0:**
 
-`10.0.1.1 – 10.0.1.254`
+- [ ] Kompletní fyzická topologie a identifikace portů
+- [ ] Kompletní přehled aktivních zařízení a jejich adres
+- [ ] Bezpečnostní kontrola Wi-Fi a routeru
+- [ ] Monitoring, případně samostatná VLAN laboratoř
 
-Tento rozsah neznamená, že jsou všechny adresy zahrnuty do DHCP poolu.
+## 10. Závěr
 
-### 5.2 DHCP
+Podařilo se zdokumentovat základní infrastrukturu domácí sítě, určit IP konfiguraci testovacího počítače a úspěšně provést čtyři základní diagnostické testy. Práce ukázala význam ověřování informací z více zdrojů: seznam zařízení v routeru nemusí být úplný a dosažení cíle při traceroute nevylučuje chybějící odpovědi mezilehlých uzlů.
 
-Testovací počítač má aktivní automatické získávání IP adresy.
+Prakticky jsem si procvičil práci s webovou administrací routeru, IPv4 adresací, DHCP, DNS, příkazy `ipconfig`, `ping`, `nslookup`, `tracert` a dokumentováním technických výsledků na GitHubu.
 
-DHCP server na adrese `10.0.1.138` klientovi poskytl IPv4 konfiguraci.
-
-DHCP umožňuje automatické přidělování síťových parametrů bez nutnosti ruční konfigurace každého zařízení.
-
-Přesný DHCP pool a případné rezervace adres zatím nebyly ověřeny.
-
-### 5.3 DNS
-
-Testovací počítač využívá router jako IPv4 DNS server.
-
-Funkčnost DNS byla ověřena příkazem:
-
-`nslookup seznam.cz`
-
-Výsledek potvrdil úspěšný překlad doménového jména na IPv4 a IPv6 adresy.
-
-### 5.4 IPv6
-
-Na testovacím počítači je aktivní IPv6.
-
-Byly identifikovány:
-
-- Globální IPv6 adresa
-- Dočasné IPv6 adresy
-- Link-local IPv6 adresa
-- IPv6 výchozí brána
-- IPv6 DNS server
-
-Konkrétní veřejně směrovatelné IPv6 adresy nejsou z bezpečnostních důvodů zveřejněny.
-
----
-
-## 6. Diagnostika a testování sítě
-
-**Datum testování:** 23. 11. 2026  
-**Testovací zařízení:** PC01  
-**Prostředí:** Windows CMD
-
-### 6.1 Test komunikace s routerem
-
-**Příkaz:** `ping 10.0.1.138`
-
-Výsledky:
-
-- Odesláno: 4 pakety
-- Přijato: 4 pakety
-- Ztráta paketů: 0 %
-- Minimální odezva: 3 ms
-- Maximální odezva: 6 ms
-- Průměrná odezva: 4 ms
-
-**Výsledek: PASS**
-
-Počítač úspěšně komunikuje s výchozí bránou.
-
-### 6.2 Test internetové konektivity
-
-**Příkaz:** `ping -4 1.1.1.1`
-
-Výsledky:
-
-- Odesláno: 4 pakety
-- Přijato: 4 pakety
-- Ztráta paketů: 0 %
-- Minimální odezva: 17 ms
-- Maximální odezva: 18 ms
-- Průměrná odezva: 17 ms
-
-**Výsledek: PASS**
-
-Byla potvrzena dostupnost externí IPv4 adresy.
-
-### 6.3 DNS test
-
-**Příkaz:** `nslookup seznam.cz`
-
-Výsledky:
-
-- DNS server odpověděl.
-- Byly vráceny IPv4 adresy.
-- Byly vráceny IPv6 adresy.
-- DNS překlad proběhl úspěšně.
-
-**Výsledek: PASS**
-
-### 6.4 Analýza trasy
-
-**Příkaz:** `tracert -4 1.1.1.1`
-
-Výsledky:
-
-| Skok | Adresa | Poznámka |
-|---|---|---|
-| 1 | 10.0.1.138 | O2 Smart Box |
-| 2 | 10.10.10.1 | Privátní síťový uzel |
-| 3 | Bez odpovědi | Timeout |
-| 4 | 90.183.197.126 | Síťový uzel |
-| 8 | 154.54.78.65 | Mezilehlý směrovač |
-| 11 | 1.1.1.1 | Cílová adresa |
-
-Některé mezilehlé uzly neodpověděly na testovací pakety.
-
-Cílová adresa však byla úspěšně dosažena.
-
-**Výsledek: PASS**
-
-### 6.5 Souhrn diagnostiky
-
-| Test | Výsledek |
-|---|---|
-| Ping na router | PASS |
-| Ping na externí IPv4 adresu | PASS |
-| DNS překlad | PASS |
-| Traceroute | PASS |
-
-Všechny čtyři základní diagnostické testy proběhly úspěšně.
-
-Testování potvrzuje funkčnost vybraných síťových služeb v okamžiku měření. Nejedná se o dlouhodobou analýzu stability ani bezpečnosti.
-
----
-
-## 7. Síťová topologie
-
-### 7.1 Logická topologie
-
-Dosud potvrzená část sítě:
-
-```text
-Internet
-   |
-O2 Smart Box 1
-10.0.1.138
-   |
-Wi-Fi
-   |
-Testovací Windows PC
-10.0.1.77/24
-```
-
-Další známé komponenty:
-
-- D-Link DGS-108
-- Další ethernetoví klienti
-- Další Wi-Fi klienti
-- Telefonní rozhraní FXS1 a FXS2
-
-### 7.2 Fyzická topologie
-
-Fyzická topologie zatím nebyla kompletně ověřena.
-
-Bude doplněna po identifikaci propojení mezi routerem, switchem, ethernetovými zásuvkami a klientskými zařízeními.
-
----
-
-## 8. Zabezpečení domácí sítě
-
-Bezpečnostní analýza je plánována jako samostatná část projektu.
-
-Kontrolované oblasti:
-
-- Zabezpečení Wi-Fi
-- Použité šifrování
-- Administrátorský přístup
-- Firewall
-- Aktualizace firmwaru
-- Hostovská Wi-Fi
-- Nepotřebné síťové služby
-- Oddělení zařízení
-- Bezpečnost přístupových údajů
-
-**Stav:** Zatím neprovedeno.
-
----
-
-## 9. Návrhy na optimalizaci
-
-Po dokončení analýzy budou vyhodnoceny možnosti zlepšení domácí sítě.
-
-Předběžně zvažované oblasti:
-
-- Zlepšení pokrytí Wi-Fi
-- Oddělení hostovských zařízení
-- Monitoring dostupnosti
-- Přehlednější inventarizace zařízení
-- Zlepšení zabezpečení administrace
-- Případné využití spravovatelného switche
-- Možné rozšíření o VLAN
-
-Žádné z těchto vylepšení zatím nebylo realizováno.
-
----
-
-## 10. Stav projektu
-
-### Dokončené úkoly
-
-- [x] Identifikace hlavního routeru
-- [x] Identifikace ethernetového switche
-- [x] Zjištění IPv4 konfigurace testovacího PC
-- [x] Ověření DHCP konfigurace klienta
-- [x] Test DNS
-- [x] Ping na router
-- [x] Ping na externí IPv4 adresu
-- [x] Traceroute do internetu
-- [x] První záznam klientů z Device List
-
-### Rozpracované úkoly
-
-- [ ] Kompletní inventarizace všech zařízení
-- [ ] Ověření IP adres dalších klientů
-- [ ] Fyzická topologie
-- [ ] Kompletní logická topologie
-- [ ] Kontrola DHCP poolu
-- [ ] Analýza Wi-Fi konfigurace
-- [ ] Bezpečnostní analýza
-- [ ] Návrh optimalizace
-- [ ] Závěrečné vyhodnocení
-
----
-
-## 11. Závěr
-
-V první fázi projektu byla identifikována základní síťová infrastruktura, provedena analýza IP konfigurace a úspěšně dokončeny základní diagnostické testy.
-
-Dále byl získán první přehled klientských zařízení připojených přes Wi-Fi a Ethernet.
-
-Následující fáze projektu budou zaměřeny na dokončení inventarizace, vytvoření topologie a kontrolu zabezpečení domácí sítě.
-
----
-
-## 12. Bezpečnost dokumentace
-
-Z důvodu ochrany soukromí a bezpečnosti domácí infrastruktury nejsou zveřejňovány:
-
-- Hesla a přístupové údaje
-- MAC adresy
-- Globální IPv6 adresy domácích zařízení
-- Osobní názvy klientských zařízení
-- Úplné zálohy konfigurace routeru
-
-Dokumentace používá anonymizované identifikátory zařízení a obsahuje pouze informace relevantní pro technickou analýzu.
+**Základní analýza a diagnostika (verze 1.0) jsou dokončeny.** Pokročilé zabezpečení a úplné fyzické mapování jsou vymezeny jako další fáze, nikoli jako již provedené činnosti.
